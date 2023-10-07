@@ -178,10 +178,7 @@ var getData = setInterval(retrieveAndDisplayData, intervalTime);
                     data: JSON.stringify({ title: title, dis: dis }),
                     contentType: "application/json",
                     success: function(response) {
-                        var msg = title + " is now saved..";
-                        
-$("#error").append(msg);
-msg = "";
+                        alert(title + "created");
                 // Retrieve and display data after adding
                         
                     },
@@ -213,6 +210,7 @@ msg = "";
   		<hr>
   		<div class="Note">
   			${dis}
+     clearInterval(getData);
   			</div>
   			</div>  `;
                             $("#data-list").append(listItem);
