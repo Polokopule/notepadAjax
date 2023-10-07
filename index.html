@@ -161,10 +161,10 @@
 
 
     // Define the interval time in milliseconds (e.g., 5000 milliseconds = 5 seconds)
-var intervalTime = 500;
+//var intervalTime = 500;
 
 // Create the interval to call retrieveAndDisplayData every intervalTime
-var getData = setInterval(retrieveAndDisplayData, intervalTime);
+retrieveAndDisplayData();
 
 // To stop the interval, you can use , for example:
 
@@ -210,7 +210,7 @@ var getData = setInterval(retrieveAndDisplayData, intervalTime);
   		<hr>
   		<div class="Note">
   			${dis}
-     clearInterval(getData);
+    // clearInterval(getData);
   			</div>
   			</div>  `;
                             $("#data-list").append(listItem);
