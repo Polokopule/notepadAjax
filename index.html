@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Notepad | firebase</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <style>
+   	input[type="radio"] , input[type="checkbox"] {
+   		display: none;
+   	}
+   	 .allNotes{
+   	 	display: none;
+   	 	width:300px;
+   	 	height:auto;
+   	 	background:#fff;
+   	 	margin-top:10px;
+   	 	border-radius: 10px;
+   	 	padding:10px;
+   	 	position:relative;
+   	 }
+   	 .add{
+   	 	position:absolute;
+   	 	bottom:15px;
+   	 	right:15px;
+   	 	  	 		background:#38BB9A;
+   	 	  	 		width:40px;
+   	 	  	 		height:40px;
+   	 	  	 		border-radius:100%;
+   	 	  	 		display: flex;
+   	 	justify-content:center;
+   	 	color:#fff;
+   	 	z-index:1;
+   	 	align-items: center;
+   	 }
+   	 input:checked ~ .allNotes{
+   	 	display: block;
+   	 }
+   	 input:checked ~ .Note{
+   	 	display: block;
+   	 }
+   	 .Note{
+   	 	display: none;
+   	 	border-left: 2px solid red;
+   	 	padding:10px;
+   	 }
+   	 
+   	 .MobileView{
+   	 	width:300px;
+   	 	height:80vh;
+   	
+   	 	padding:10px;
+   	 
+   	 }
+   	 
+   	 body{
+   	 	display: flex;
+   	 	justify-content:center;
+   	 	align-items: centr;
+   	 	height:100vh;
+   flex-direction: column;
+   text-align: center;
+   	 		background:#38BB9A;
+   	 	
+   	 }
+   	 
+   	 .Nav{
+   	 	width:300px;
+   	 	height:65px;
+   	 	background:#fff;
+   	 	border-radius: 10px;
+   	 padding:10px;
+   	 }
+   	 .Nav > b{
+   	 	padding:10px;
+   	 	font-size:19px;
+   	 	
+   	 }
+   	#title{
+   	 	padding:10px;
+   	 	border:1px solid #38BB9A;
+   	 	color:#38BB9A;
+   	 	width:200px;
+   	 	border-radius: 6px;
+   	 	outline: none;
+   	 }
+   	
+   	 #dis{
+   	 	height:200px;
+   	 	padding:10px;
+   	 	width:250px;
+   	 	border: none;
+   	 	outline: none;
+   	 }
+   	 .btn{
+   	 	padding:8px;
+   	background: #38BB9A;
+   	 	color:#fff;
+   	 	border: none;
+   	 	border-radius: 6px;
+   	 	outline: none;
+   	 }
+   	 .t{
+   	 	
+   	 	padding:10px;
+   	 }
+   	 .by{
+   	 	color:#fff;
+   	 	position: fixed;
+   	 	bottom:13px;
+   	 }
+   	 .by > a{
+   	 	text-decoration: none;
+   	 	padding:5px;
+   	 	border-bottom:2px solid #fff;
+   	 	color:#fff;
+  
+   	 }
+   	</style>
+</head>
+<body>
+	<div class="MobileView">
+  <div class="Nav"><br>
+  	<b>Firebase & Ajax Notepad<br>
+  	
+  	
+  	</b>
+  	</div>
+  	
+  	<div class="home">
+  		
+  	<div class="tab">
+  		<input type="radio" name="tab" id="notes" checked/>
+  		<div class="allNotes" >
+  			
+  	<div 	id="data-list"></div>
+  	<i id="error"></i>
+  		<label class="add" for="add">+</label>
+  			</div>
+  		</div>
+  		</div>
+  		 	<div class="tab">
+  		<input type="radio" name="tab" id="add" />
+  		<div class="allNotes">
+  			<form id="data-form">
+  		<input type="text" id="title" name="title" placeholder="Your Title here .."/> <input type="submit" value="Add Data" class="btn"><br>
+  		<textarea type="text" id="dis" name="dis" placeholder="your note here"required></textarea>
+  		</form>
+  		<label class="add" for="notes">&times;</label>
+  			</div>
+  		</div>
+  		</div>
+  		
+  	<span class="by">	Created with ❤ by <a href="#">Poloko Edward Pule</a></span>
+  		</div>
+  		
+  		
+  		<script>
+        $(document).ready(function() {
+            // Define your Firebase project URL
+            var firebaseDatabaseURL='https://chatai-56492-default-rtdb.firebaseio.com/';
+
+
+    // Define the interval time in milliseconds (e.g., 5000 milliseconds = 5 seconds)
+var intervalTime = 500;
+
+// Create the interval to call retrieveAndDisplayData every intervalTime
+var getData = setInterval(retrieveAndDisplayData, intervalTime);
+
+// To stop the interval, you can use , for example:
+
+// 
+
+       // Function to add data to Firebase
+            function addData(title, dis) {
+                $.ajax({
+                    url: firebaseDatabaseURL + "Page.json",
+                    type: "POST",
+                    data: JSON.stringify({ title: title, dis: dis }),
+                    contentType: "application/json",
+                    success: function(response) {
+                        var msg = title + " is now saved..";
+                        
+$("#error").append(msg);
+msg = "";
+                // Retrieve and display data after adding
+                        
+                    },
+                    error: function(error) {
+                        console.error("Error adding data:", error);
+                    }
+                });
+            }
+
+            // Function to retrieve and display data
+            function retrieveAndDisplayData() {
+                $.ajax({
+                    url: firebaseDatabaseURL + "Page.json",
+                    type: "GET",
+                    success: function(data) {
+                        
+                     
+                     
+                 // Clear previous data
+                        $("#data-list").empty();
+
+                        // Loop through the data and display it
+                        $.each(data, function(key, value) {
+                            var title = value.title;
+                            var dis = value.dis;
+                            var listItem = `<div class="View">
+  		<input type="checkbox" name="view" id="${title}" />
+  		<label for="${title}" class="t">${title}</label>
+  		<hr>
+  		<div class="Note">
+  			${dis}
+  			</div>
+  			</div>  `;
+                            $("#data-list").append(listItem);
+                        });
+                    },
+                    error: function(error) {
+                        console.error("Error retrieving data:", error);
+                    }
+                });
+            }
+
+            // Submit form to add data
+            $("#data-form").submit(function(event) {
+                event.preventDefault();
+                var title = $("#title").val();
+                var dis = $("#dis").val();
+                addData(title, dis);
+            });
+
+            // Retrieve and display data on page load
+            retrieveAndDisplayData();
+        });
+    </script>
+</body>
+</html>
